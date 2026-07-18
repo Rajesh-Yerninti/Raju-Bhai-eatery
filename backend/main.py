@@ -7,6 +7,12 @@ import generic
 app = FastAPI()
 
 inprogress_orders = {}
+@app.get("/")
+def home():
+    return {
+        "status": "API is running",
+        "message": "Welcome to Raju Bhai Eatery API"
+    }
 @app.post("/")
 async def handle_request(request: Request):
     # Retrieve the JSON data from the request
