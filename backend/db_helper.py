@@ -1,11 +1,12 @@
+import os
 import mysql.connector
 
-# Initialize global connection once
 cnx = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='root',
-    database='pandeyji_eatery'
+    host=os.getenv("MYSQLHOST"),
+    user=os.getenv("MYSQLUSER"),
+    password=os.getenv("MYSQLPASSWORD"),
+    database=os.getenv("MYSQLDATABASE"),
+    port=int(os.getenv("MYSQLPORT"))
 )
 
 def insert_order_tracking(order_id, status):
