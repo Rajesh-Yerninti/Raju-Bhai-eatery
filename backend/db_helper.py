@@ -1,7 +1,8 @@
 import os
 import mysql.connector
 
-cnx = mysql.connector.connect(
+def get_connection():
+    return mysql.connector.connect(
     host=os.getenv("MYSQLHOST"),
     user=os.getenv("MYSQLUSER"),
     password=os.getenv("MYSQLPASSWORD"),
@@ -10,6 +11,7 @@ cnx = mysql.connector.connect(
 )
 
 def insert_order_tracking(order_id, status):
+    cnx=get_connection()
     cursor = cnx.cursor()
 
     # Inserting the record into the order_tracking table
@@ -24,6 +26,7 @@ def insert_order_tracking(order_id, status):
 
 
 def insert_order_item(food_item, quantity, order_id):
+    cnx=get_connection()
     try:
         cursor = cnx.cursor()
 
@@ -56,6 +59,7 @@ def insert_order_item(food_item, quantity, order_id):
         return -1
 
 def get_total_order_price(order_id):
+    cnx=get_connection()
     cursor = cnx.cursor()
 
     # Executing the SQL query to get the total order price
@@ -71,6 +75,7 @@ def get_total_order_price(order_id):
     return result
 
 def get_next_order_id():
+    cnx=get_connection()
     cursor = cnx.cursor()
 
     # Executing the SQL query to get the next available order_id
@@ -89,6 +94,7 @@ def get_next_order_id():
     else:
         return result+1
 def get_order_status(order_id: int):
+    cnx=get_connection()
     # Create a cursor object
     cursor = cnx.cursor()
 
