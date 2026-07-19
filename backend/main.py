@@ -119,7 +119,7 @@ def remove_from_order(parameters: dict, session_id: str):
         fulfillment_text+=f"here is what is left in your order: {order_str}. Anything else?"
 
     return JSONResponse(content={
-        "fulfillment_text":fulfillment_text
+        "fulfillmentText":fulfillment_text
     })
 
 def track_order(parameters: dict):
