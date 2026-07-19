@@ -72,7 +72,7 @@ def get_total_order_price(order_id):
     # Closing the cursor
     cursor.close()
 
-    return result
+    return result[0] if result else 0
 
 def get_next_order_id():
     cnx=get_connection()
