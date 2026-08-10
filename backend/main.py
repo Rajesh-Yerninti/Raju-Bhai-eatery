@@ -51,28 +51,28 @@ def save_to_db(order:dict):
 
 def complete_order(parameters:dict,session_id: str):
     if session_id not in inprogress_orders:
-        fulfillment_text=f"I'm having trouble finding your order. Try again later."
+        fulfillmentText=f"I'm having trouble finding your order. Try again later."
     else:
         order=inprogress_orders[session_id]
         order_id=save_to_db(order)
 
         if order_id==-1:
-            fulfillment_text="Sorry! I couldn't process your order."  \
+            fulfillmentText="Sorry! I couldn't process your order."  \
                               "Please place new order again."
         else:
             order_total=db_helper.get_total_order_price(order_id)
-            fulfillment_text=f"Awesome! we have placed your order."\
+            fulfillmentText=f"Awesome! we have placed your order."\
                             f"here is your order ID: {order_id}"\
                             f"Your order total is {order_total} which you can pay at the time of delivery"
         del inprogress_orders[session_id]
     return JSONResponse(content={
-        "fulfillmentText": fulfillment_text
+        "fulfillmentText": fulfillmentText
     })
 def add2order(parameters: dict, session_id: str):
     food_items = parameters['food-item']
     quantities = parameters['number']
     if len(food_items) != len(quantities):
-        fullfillment_text = f"Sorry! The number of food items and quantities provided are not the same"
+        fullfillmentText = f"Sorry! The number of food items and quantities provided are not the same"
     else:
         new_food_dict=dict(zip(food_items, quantities))
         if session_id in inprogress_orders:
@@ -82,10 +82,10 @@ def add2order(parameters: dict, session_id: str):
         else:
             inprogress_orders[session_id] = new_food_dict
         order_str=generic.get_str_from_food_dict(inprogress_orders[session_id])
-        fullfillment_text =f"so far you have {order_str}. Do you need anything else?"
+        fullfillmentText =f"so far you have {order_str}. Do you need anything else?"
 
     return JSONResponse(content={
-        "fulfillmentText": fullfillment_text
+        "fulfillmentText": fullfillmentText
     })
 #inprogress_orders={
 #session_id_1': {"pizza": 2, "mango lassi": 1},
@@ -109,27 +109,27 @@ def remove_from_order(parameters: dict, session_id: str):
             removed_items.append(item)
             del current_order[item]
     if len(removed_items)>0:
-        fulfillment_text=f"Removed {''.join(removed_items)} from your order"
+        fulfillmentText=f"Removed {''.join(removed_items)} from your order"
     if len(not_found_items)>0:
-        fulfillment_text=f"Your current order does not have{''.join(not_found_items)} items"
+        fulfillmentText=f"Your current order does not have{''.join(not_found_items)} items"
     if len(current_order.keys())==0:
-        fulfillment_text+="Your order is empty"
+        fulfillmentText+="Your order is empty"
     else:
         order_str=generic.get_str_from_food_dict(current_order)
-        fulfillment_text+=f"here is what is left in your order: {order_str}. Anything else?"
+        fulfillmentText+=f"here is what is left in your order: {order_str}. Anything else?"
 
     return JSONResponse(content={
-        "fulfillmentText":fulfillment_text
+        "fulfillmentText":fulfillmentText
     })
 
 def track_order(parameters: dict):
     order_id = int(parameters['orderId'])
     order_status = db_helper.get_order_status(order_id)
     if order_status:
-        fulfillment_text = f"The order status for order id: {order_id} is: {order_status}"
+        fulfillmentText = f"The order status for order id: {order_id} is: {order_status}"
     else:
-        fulfillment_text = f"No order found with order id: {order_id}"
+        fulfillmentText = f"No order found with order id: {order_id}"
     return JSONResponse(content={
-        "fulfillmentText": fulfillment_text
+        "fulfillmentText": fulfillmentText
     })
 #4 biryani, 2 Mango lassi, 4 coke, 3 pizza, 1 masala dosa, one vada pav, two rava dosa, 5 samo hhjsa and three bhaji
